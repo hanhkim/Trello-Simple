@@ -1,0 +1,19 @@
+
+
+.wrapper {
+  padding: 20px;
+}
+
+.wrapper__area {
+  background: #dfd4d4;
+  border-radius: 8px;
+  padding: 4px;
+  text-align: center
+}
+
+.wrapper__area-title {
+  height: 40px;
+  background: white;
+  border-radius: 4px;
+  line-height: 40px!important;
+}
