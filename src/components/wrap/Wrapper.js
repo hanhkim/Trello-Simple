@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 import { Row, Col, Typography } from 'antd';
 import Card from '../card/Card';
 import './Wrapper.css';
@@ -7,7 +7,7 @@ import './Wrapper.css';
 const { Title } = Typography;
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'inherit',
+    background: isDraggingOver ? '#efcbd1' : 'inherit',
 });
 
 const Wrapper = props => {

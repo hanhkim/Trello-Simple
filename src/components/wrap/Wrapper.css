@@ -1,7 +1,8 @@
 
 
 .wrapper {
-  padding: 20px;
+  padding: 10px;
+  min-width: 220px;
 }
 
 .wrapper__area {

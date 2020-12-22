@@ -1,0 +1,4 @@
+.main-content {
+  flex-wrap: nowrap!important;
+  overflow: auto;
+}

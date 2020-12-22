@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Row, Col } from 'antd';
-
+import { DragDropContext } from 'react-beautiful-dnd';
+import { Row } from 'antd';
 import { Wrapper } from '../index';
 
-import './body.scss';
+import './Body.css';
 
 // fake data generator
 const getItems = (count, offset = 0) =>
@@ -42,18 +41,11 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 const blockList = ['todos', 'doing', 'done', 'note'];
 
 const Body = props => {
-    const [items, setItems] = useState(getItems(10));
-    const [selected, setSelected] = useState(getItems(5, 10));
-
     const [todoList, setTodoList] = useState(getItems(10));
     const [doingList, setDoingList] = useState([]);
     const [doneList, setDoneList] = useState([]);
     const [noteList, setNoteList] = useState([]);
 
-    const id2List = {
-        droppable: 'items',
-        droppable2: 'selected',
-    };
     const getList = id => {
         switch (id) {
             case 'todos':
@@ -64,6 +56,8 @@ const Body = props => {
                 return doneList;
             case 'note':
                 return noteList;
+            default:
+                return;
         }
     };
 
@@ -77,6 +71,8 @@ const Body = props => {
                 return setDoneList;
             case 'note':
                 return setNoteList;
+            default:
+                return;
         }
     };
 

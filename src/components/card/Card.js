@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
 import './Card.css';
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -34,6 +34,8 @@ const Card = props => {
     );
 };
 
-Card.propTypes = {};
+Card.propTypes = {
+    item: PropTypes.object,
+};
 
 export default Card;
