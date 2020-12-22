@@ -39,30 +39,16 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     return result;
 };
 
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
-
-    // styles we need to apply on draggables
-    ...draggableStyle,
-});
-
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    padding: grid,
-    width: 250,
-});
+const blockList = ['todos', 'doing', 'done', 'note'];
 
 const Body = props => {
     const [items, setItems] = useState(getItems(10));
     const [selected, setSelected] = useState(getItems(5, 10));
+
+    const [todoList, setTodoList] = useState(getItems(10));
+    const [doingList, setDoingList] = useState([]);
+    const [doneList, setDoneList] = useState([]);
+    const [noteList, setNoteList] = useState([]);
 
     const id2List = {
         droppable: 'items',
@@ -70,125 +56,100 @@ const Body = props => {
     };
     const getList = id => {
         switch (id) {
-            case 'droppable':
-                return items;
-            case 'droppable2':
-                return selected;
+            case 'todos':
+                return todoList;
+            case 'doing':
+                return doingList;
+            case 'done':
+                return doneList;
+            case 'note':
+                return noteList;
+        }
+    };
+
+    const onSetItems = key => {
+        switch (key) {
+            case 'todos':
+                return setTodoList;
+            case 'doing':
+                return setDoingList;
+            case 'done':
+                return setDoneList;
+            case 'note':
+                return setNoteList;
         }
     };
 
     const onDragEnd = result => {
         const { source, destination } = result;
-
+        console.log('result: ', result);
         // dropped outside the list
         if (!destination) {
             return;
         }
         if (source.droppableId === destination.droppableId) {
             // the same tree
-            if (source.droppableId === 'droppable') {
+            if (source.droppableId === 'todos') {
                 let itemsAfterDrag = reorder(
-                    items,
+                    todoList,
                     source.index,
                     destination.index,
                 );
 
-                setItems(itemsAfterDrag);
-            } else if (source.droppableId === 'droppable2') {
+                setTodoList(itemsAfterDrag);
+            } else if (source.droppableId === 'doing') {
                 let itemsAfterDrag = reorder(
-                    selected,
+                    doingList,
                     source.index,
                     destination.index,
                 );
 
-                setSelected(itemsAfterDrag);
+                setDoingList(itemsAfterDrag);
+            } else if (source.droppableId === 'done') {
+                let itemsAfterDrag = reorder(
+                    doneList,
+                    source.index,
+                    destination.index,
+                );
+
+                setDoneList(itemsAfterDrag);
+            } else if (source.droppableId === 'note') {
+                let itemsAfterDrag = reorder(
+                    noteList,
+                    source.index,
+                    destination.index,
+                );
+
+                setNoteList(itemsAfterDrag);
             }
         } else {
             // difference tree
+            const keySource = source.droppableId;
+            const keyDestination = destination.droppableId;
+
             const itemsAfterDrag = move(
-                getList(source.droppableId),
-                getList(destination.droppableId),
+                getList(keySource),
+                getList(keyDestination),
                 source,
                 destination,
             );
+            console.log('after: ', itemsAfterDrag);
 
-            setItems(itemsAfterDrag.droppable);
-            setSelected(itemsAfterDrag.droppable2);
+            const setItemFuncSource = onSetItems(keySource);
+            const setItemsFuncDes = onSetItems(keyDestination);
+            setItemFuncSource(itemsAfterDrag[keySource]);
+            setItemsFuncDes(itemsAfterDrag[keyDestination]);
         }
     };
 
     return (
         <Row className="main-content">
-            <Wrapper title="Todos" />
-            <Wrapper title="Doing" />
-            <Wrapper title="Done" />
-            <Wrapper title="Notes" />
-            {/* <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <Col
-                            span={4}
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                            {items.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}
-                                >
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style,
-                                            )}
-                                        >
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </Col>
-                    )}
-                </Droppable>
-                <Droppable droppableId="droppable2">
-                    {(provided, snapshot) => (
-                        <Col
-                            span={4}
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                            {selected.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}
-                                >
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style,
-                                            )}
-                                        >
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </Col>
-                    )}
-                </Droppable> */}
-            {/* </DragDropContext> */}
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Wrapper title={blockList[0]} items={todoList} />
+                <Wrapper title={blockList[1]} items={doingList} />
+                <Wrapper title={blockList[2]} items={doneList} />
+                <Wrapper title={blockList[3]} items={noteList} />
+            </DragDropContext>
         </Row>
     );
 };
