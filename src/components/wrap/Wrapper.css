@@ -24,4 +24,10 @@
   width: 100%;
   min-height: 100px;
   padding: 10px 20px;
+  max-height: 650px;
+  overflow: auto;
+}
+
+.wrapper__bottom {
+  height: 40px;
 }

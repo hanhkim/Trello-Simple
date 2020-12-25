@@ -8,7 +8,6 @@ import './Body.css';
 // fake data generator
 const getItems = (count, offset = 0) =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}`,
         content: `item ${k + offset}`,
     }));
 
@@ -41,7 +40,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 const blockList = ['todos', 'doing', 'done', 'note'];
 
 const Body = props => {
-    const [todoList, setTodoList] = useState(getItems(10));
+    const [todoList, setTodoList] = useState(getItems(5));
     const [doingList, setDoingList] = useState([]);
     const [doneList, setDoneList] = useState([]);
     const [noteList, setNoteList] = useState([]);
@@ -129,7 +128,6 @@ const Body = props => {
                 source,
                 destination,
             );
-            console.log('after: ', itemsAfterDrag);
 
             const setItemFuncSource = onSetItems(keySource);
             const setItemsFuncDes = onSetItems(keyDestination);
@@ -138,13 +136,49 @@ const Body = props => {
         }
     };
 
+    const onAddNewCard = (value, title) => {
+        let items = getList(title);
+        let newCard = { content: value };
+        items = [...items, newCard];
+
+        switch (title) {
+            case blockList[0]:
+                return setTodoList(items);
+            case blockList[1]:
+                return setDoingList(items);
+            case blockList[2]:
+                return setDoneList(items);
+            case blockList[3]:
+                return setNoteList(items);
+            default:
+                return;
+        }
+    };
+
+    console.log('todo: ', todoList);
     return (
         <Row className="main-content">
             <DragDropContext onDragEnd={onDragEnd}>
-                <Wrapper title={blockList[0]} items={todoList} />
-                <Wrapper title={blockList[1]} items={doingList} />
-                <Wrapper title={blockList[2]} items={doneList} />
-                <Wrapper title={blockList[3]} items={noteList} />
+                <Wrapper
+                    title={blockList[0]}
+                    items={todoList}
+                    onAddNewCard={onAddNewCard}
+                />
+                <Wrapper
+                    title={blockList[1]}
+                    items={doingList}
+                    onAddNewCard={onAddNewCard}
+                />
+                <Wrapper
+                    title={blockList[2]}
+                    items={doneList}
+                    onAddNewCard={onAddNewCard}
+                />
+                <Wrapper
+                    title={blockList[3]}
+                    items={noteList}
+                    onAddNewCard={onAddNewCard}
+                />
             </DragDropContext>
         </Row>
     );

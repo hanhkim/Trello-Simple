@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { Row, Col, Typography } from 'antd';
-import Card from '../card/Card';
+import { Row, Col, Typography, Button, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import Card from '../card';
 import './Wrapper.css';
 
 const { Title } = Typography;
@@ -10,8 +11,23 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? '#efcbd1' : 'inherit',
 });
 
+const { TextArea } = Input;
+
 const Wrapper = props => {
-    const { title, items } = props;
+    const { title, items, onAddNewCard } = props;
+    const [isAdding, onSetAdd] = useState(false);
+    const [input, setInput] = useState('');
+    const onAddItem = () => {
+        onSetAdd(true);
+    };
+
+    const onSave = () => {
+        onSetAdd(false);
+        onAddNewCard(input, title);
+        setInput('');
+    };
+
+    console.log('item: ', items);
 
     return (
         <Col className="wrapper" span={6}>
@@ -39,6 +55,31 @@ const Wrapper = props => {
                         </Row>
                     )}
                 </Droppable>
+                {isAdding === true && (
+                    <Row>
+                        <TextArea
+                            placeholder="Add new card"
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
+                            onPressEnter={onSave}
+                        />
+                    </Row>
+                )}
+                <Row className="wrapper__bottom">
+                    {!isAdding ? (
+                        <Button
+                            icon={<PlusOutlined />}
+                            onClick={() => onAddItem()}
+                        >
+                            Add new card
+                        </Button>
+                    ) : (
+                        <React.Fragment>
+                            <Button onClick={() => onSave()}>Save</Button>
+                            <Button>Cancel</Button>
+                        </React.Fragment>
+                    )}
+                </Row>
             </div>
         </Col>
     );

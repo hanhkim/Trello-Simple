@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Draggable } from 'react-beautiful-dnd';
 import './Card.css';
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -12,30 +11,17 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     ...draggableStyle,
 });
 
-const Card = props => {
-    const { item, index } = props;
+const CardItem = props => {
+    const { item } = props;
     return (
-        <Draggable key={item.id} draggableId={item.id} index={index}>
-            {(provided, snapshot) => (
-                <div
-                    className="card"
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style,
-                    )}
-                >
-                    <div>{item.content}</div>
-                </div>
-            )}
-        </Draggable>
+        <div className="card-item">
+            <div>{item.content}</div>
+        </div>
     );
 };
 
-Card.propTypes = {
+CardItem.propTypes = {
     item: PropTypes.object,
 };
 
-export default Card;
+export default CardItem;
