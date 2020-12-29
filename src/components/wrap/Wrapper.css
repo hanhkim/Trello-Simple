@@ -1,0 +1,33 @@
+
+
+.wrapper {
+  padding: 10px;
+  min-width: 220px;
+}
+
+.wrapper__area {
+  background: #dfd4d4;
+  border-radius: 8px;
+  padding: 4px;
+  text-align: center
+}
+
+.wrapper__area-title {
+  height: 40px;
+  background: white;
+  border-radius: 4px;
+  line-height: 40px!important;
+  text-transform: uppercase;
+}
+
+.wrapper__items {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px 20px;
+  max-height: 650px;
+  overflow: auto;
+}
+
+.wrapper__bottom {
+  height: 40px;
+}

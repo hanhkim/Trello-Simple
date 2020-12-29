@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "prettier.useTabs": true,
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.detectIndentation":false
+  },
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true
+}
