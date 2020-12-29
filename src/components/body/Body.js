@@ -155,7 +155,6 @@ const Body = props => {
         }
     };
 
-    console.log('todo: ', todoList);
     return (
         <Row className="main-content">
             <DragDropContext onDragEnd={onDragEnd}>

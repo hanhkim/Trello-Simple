@@ -8,4 +8,24 @@
   box-shadow: 0px 0px 4px #929292;
   border-radius: 10px;
   outline: none;
+  overflow: hidden;
+}
+
+.card-item {
+  position: relative;
+}
+
+.card-item__btn-edit {
+  position: absolute!important;
+  right: 0;
+  bottom: 0;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border-radius: 8px!important;
+}
+
+.card-item__color-picker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }

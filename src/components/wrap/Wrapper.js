@@ -27,8 +27,6 @@ const Wrapper = props => {
         setInput('');
     };
 
-    console.log('item: ', items);
-
     return (
         <Col className="wrapper" span={6}>
             <div className="wrapper__area">
